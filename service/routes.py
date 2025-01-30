@@ -68,17 +68,17 @@ def create_accounts():
 # READ AN ACCOUNT
 ######################################################################
 
-@app.route("/accounts/<int:id>", methods=["GET"])
-def read_account(id):
+@app.route("/accounts/<int:account_id>", methods=["GET"])
+def read_account(account_id):
     """
     Reads an Account
     This endpoint will read an Account based the data in the account id
     """
-    app.logger.info(f"Request to read an Account with id {id}")
-    account = Account.find(id)
+    app.logger.info(f"Request to read an Account with id {account_id}")
+    account = Account.find(account_id)
 
     if not account:
-        abort(status.HTTP_404_NOT_FOUND, f"Account with id [{id}] could not be found.")
+        abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
 
     return account.serialize(), status.HTTP_200_OK
 
@@ -86,7 +86,24 @@ def read_account(id):
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
 
-# ... place you code here to UPDATE an account ...
+@app.route("/accounts/<int:account_id>", methods=["PUT"])
+def update_accounts(account_id):
+    """
+    Updates an Account
+    This endpoint will update an Account based the id and the data in the body that is posted
+    """
+    app.logger.info(f"Request to update an Account with id {account_id}")
+
+    account = Account.find(account_id)
+
+    if not account:
+        abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
+
+    account.deserialize(request.get_json())
+    account.update()
+    message = account.serialize()
+
+    return message, status.HTTP_200_OK
 
 
 ######################################################################
