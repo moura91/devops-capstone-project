@@ -165,3 +165,12 @@ class TestAccountService(TestCase):
         self.assertEqual(updated_account["name"], "New name")
         response = self.client.put(f"{BASE_URL}/0", json=new_account)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_delete_account(self):
+        """It should delete an Account"""
+        new_account = self._create_accounts(1)[0]        
+        # delete the account
+        response = self.client.delete(f"{BASE_URL}/{new_account.id}")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+
