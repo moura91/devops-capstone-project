@@ -27,7 +27,7 @@ spec:
     - name: args
       description: The arguments to nose
       type: string
-      default: -v
+      default: "-v"
     - name: database_uri
       description: Database connection string
       type: string
